@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Booking confirmed";
+    Layout = "_AppLayout";
+    var bookingId = (int)ViewBag.BookingId;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/booking-success.css" asp-append-version="true" />
+}
+
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-badge">
+            <i class="bi bi-check2-circle" aria-hidden="true"></i>
+        </div>
+
+        <h1 class="success-title">Thank you for choosing Resort</h1>
+        <p class="success-sub">Your booking has been confirmed successfully.</p>
+
+        <div class="success-meta">
+            <span class="pill"><span class="muted">Booking ID:</span> #@bookingId</span>
+            <span class="pill"><span class="muted">Status:</span> Confirmed</span>
+        </div>
+
+        <div class="success-actions">
+            <a class="btn-primary" href="@Url.Action("Invoice", "Bookings", new { id = bookingId })">
+                View invoice <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+
+            <a class="btn-secondary" href="@Url.Action("Index", "Home")">Back to home</a>
+        </div>
+    </div>
+</div>

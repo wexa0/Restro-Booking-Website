@@ -1,0 +1,74 @@
+﻿@model Resort.Models.Auth.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_LandingLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/auth.css" asp-append-version="true" />
+}
+
+<div class="auth-logo">
+    <img src="~/images/brand/restro-logo.png" alt="Restro" />
+</div>
+
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-top">
+           
+
+            <div class="auth-head">
+                <h1 class="auth-title">Create account</h1>
+                <p class="auth-sub">Register to start booking with ease.</p>
+            </div>
+        </div>
+
+
+        <form class="auth-form" asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="auth-error-summary" asp-validation-summary="All"></div>
+            }
+            <div class="auth-field">
+
+                <label class="auth-label" asp-for="FullName"></label>
+                <input class="auth-input" asp-for="FullName" placeholder="write your full name" />
+                <span asp-validation-for="FullName"></span>
+            </div>
+
+
+            <div class="auth-row">
+                <div class="auth-label">Email</div>
+                <input class="auth-input" asp-for="Email" placeholder="name@email.com" />
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="auth-row">
+                <div class="auth-label">Password</div>
+                <input class="auth-input" asp-for="Password" placeholder="At least 8 characters" />
+                <div class="auth-hint">Use 8+ characters. Better if it includes letters & numbers.</div>
+                <span asp-validation-for="Password"></span>
+            </div>
+
+            <div class="auth-row">
+                <div class="auth-label">Confirm password</div>
+                <input class="auth-input" asp-for="ConfirmPassword" placeholder="Repeat password" />
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+
+            <button class="auth-btn" type="submit">Create account</button>
+
+            <div class="auth-footer">
+                Already have an account?
+                <a asp-action="Login">Login</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

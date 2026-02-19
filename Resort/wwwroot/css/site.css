@@ -1,0 +1,117 @@
+html {
+    font-size: 14px;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.app-footer {
+    margin-top: 40px;
+    background: #5D6C5D; /* ‰›” ÀÌ„ «· ÿ»Ìﬁ */
+    color: #fff;
+}
+
+.app-footer__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 18px 18px;
+    display: grid;
+    gap: 14px;
+    justify-items: center;
+    text-align: center;
+}
+
+/* logo */
+.app-footer__logo {
+    width: 84px;
+    height: 84px;
+    border-radius: 999px;
+    background: rgba(251,248,241,0.92);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+    .app-footer__logo img {
+        width: 105%;
+        height: auto;
+        display: block;
+    }
+
+/* nav */
+.app-footer__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 2px;
+}
+
+.app-footer__link {
+    color: #fff; /* √”„«¡ »Ì÷«¡ */
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    opacity: 0.95;
+    padding: 6px 10px;
+    border-radius: 999px;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+    .app-footer__link:hover {
+        background: rgba(255,255,255,0.12);
+        opacity: 1;
+    }
+
+/* bottom bar */
+.app-footer__bar {
+    background: #6a4b12;
+    padding: 10px 18px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+
+    .app-footer__bar span {
+        color: white; /* »‰Ì „À· ﬂ—Ê  «·”⁄— ⁄‰œﬂ */
+    }
+
+html, body {
+    height: 100%;
+}
+
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout__content {
+    flex: 1; /* Â–« «··Ì ÌŒ·Ì «·›Ê — Ì‰“·  Õ  »«·÷»ÿ */
+}

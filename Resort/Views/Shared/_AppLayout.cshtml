@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <title>@ViewData["Title"] - Restro</title>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @RenderBody()
+
+
+
+
+    <footer class="app-footer">
+        <div class="app-footer__inner">
+            <!-- Logo -->
+            <div class="app-footer__logo">
+                <img src="~/images/brand/restro-logo.png" alt="Restro logo" />
+            </div>
+
+            <!-- Nav -->
+            <nav class="app-footer__nav" aria-label="Footer Navigation">
+                <a href="@Url.Action("Index", "Home")" class="app-footer__link">Home</a>
+                <a href="#" class="app-footer__link">History</a>
+                <a href="#" class="app-footer__link">Profile</a>
+                <a href="#" class="app-footer__link">Contact</a>
+            </nav>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="app-footer__bar">
+            <span>All Rights Reserved</span>
+        </div>
+    </footer>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Script", required: false)
+</body>
+</html>

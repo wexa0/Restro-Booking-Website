@@ -1,0 +1,244 @@
+﻿@model List<Resort.Applications.Places.PlaceCardDto>
+
+
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
+}
+
+<div class="app-shell">
+    <!-- Header wave area -->
+    <header class="app-header">
+        <div class="app-brand">
+            <img src="~/images/brand/restro-logo.png" alt="Restro logo" />
+        </div>
+
+        <nav class="app-nav">
+          
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form class="nav-logout" asp-controller="Auth" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="app-nav__link app-nav__link--btn">Sign out</button>
+                </form>
+            }
+            else
+            {
+                <a class="app-nav__link" asp-controller="Auth" asp-action="Login">Sign in</a>
+            }
+        </nav>
+
+
+
+        @{
+            var fullName = User.Identity?.Name ?? "Guest";
+            var firstName = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? fullName;
+        }
+        <h1 class="app-title">
+            Welcome <span>@firstName</span>
+        </h1>
+
+
+
+        <svg class="header-wave" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true">
+            <path fill="#fbf8f1"
+                  d="M0,64L60,80C120,96,240,128,360,144C480,160,600,160,720,149.3C840,139,960,117,1080,138.7C1200,160,1320,224,1380,256L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z">
+            </path>
+        </svg>
+
+    </header>
+
+    <!-- Content -->
+    <main class="app-main">
+        <!-- Search -->
+        <div class="search-wrap">
+            <i class="bi bi-search search-icon" aria-hidden="true"></i>
+
+            <input class="search-input" id="searchInput" type="text" placeholder="Search" autocomplete="off" />
+
+        </div>
+
+
+        <p class="available-text">Find Your Stay </p>
+
+        @using Resort.Applications.Places
+        @{
+            var q = ViewBag.Query as PlaceQuery ?? new PlaceQuery();
+            var regions = ViewBag.Regions as List<string> ?? new();
+            var cities = ViewBag.Cities as List<string> ?? new();
+        }
+
+        <form class="controls" method="get" asp-controller="Home" asp-action="Index">
+            <!-- Search -->
+        
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <!-- Sort (standard dropdown) -->
+                    <div class="select-pill" title="Sort">
+                        <i class="bi bi-filter-right"></i>
+                        <select name="Sort" class="select-pill__select">
+                            <option value="@((int)PlaceSort.Recommended)" selected="@(q.Sort == PlaceSort.Recommended)">Recommended</option>
+                            <option value="@((int)PlaceSort.PriceAsc)" selected="@(q.Sort == PlaceSort.PriceAsc)">Price: Low to High</option>
+                            <option value="@((int)PlaceSort.PriceDesc)" selected="@(q.Sort == PlaceSort.PriceDesc)">Price: High to Low</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter button opens panel -->
+                    <button class="pill pill--icon" type="button" id="openFilter" title="Filter">
+                        <i class="bi bi-sliders"></i>
+                    </button>
+
+                    <!-- Apply -->
+                    <button class="pill pill--primary" type="submit" title="Apply">
+                        Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Panel (standard sheet) -->
+            <div class="filter-sheet" id="filterSheet" aria-hidden="true">
+                <div class="filter-sheet__backdrop" id="closeFilter"></div>
+
+                <div class="filter-sheet__panel">
+                    <div class="filter-sheet__head">
+                        <div class="filter-sheet__title">Filters</div>
+                        <button type="button" class="filter-sheet__close" id="closeFilter2" aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="filter-sheet__body">
+                        <div class="field">
+                            <label class="label">Region</label>
+                            <select name="Region" class="input" id="regionSelect">
+                                <option value="">All</option>
+                                @foreach (var r in regions)
+                                {
+                                    <option value="@r" selected="@(q.Region == r)">@r</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">City</label>
+                            <select name="City" class="input">
+                                <option value="">All</option>
+                                @foreach (var c in cities)
+                                {
+                                    <option value="@c" selected="@(q.City == c)">@c</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="field-grid">
+                            <div class="field">
+                                <label class="label">Min price</label>
+                                <input class="input" type="number" name="MinPrice" value="@(q.MinPrice?.ToString() ?? "")" placeholder="0" min="0" />
+                            </div>
+                            <div class="field">
+                                <label class="label">Max price</label>
+                                <input class="input" type="number" name="MaxPrice" value="@(q.MaxPrice?.ToString() ?? "")" placeholder="2000" min="0" />
+                            </div>
+                        </div>
+
+                        <!-- Preserve search/sort if sheet submit -->
+                        <input type="hidden" name="Search" value="@q.Search" />
+                        <input type="hidden" name="Sort" value="@((int)q.Sort)" />
+                    </div>
+
+                    <div class="filter-sheet__footer">
+                        <a class="btn btn-ghost" href="@Url.Action("Index", "Home")">Clear</a>
+                        <button class="btn btn-primary" type="submit">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        @* Cards Grid *@
+        <section class="cards-grid">
+            @foreach (var place in Model)
+            {
+
+                <a class="place-card"
+                   data-name="@place.Name"
+                   href="@Url.Action("Details", "Places", new { id = place.Id })">
+                    <div class="place-card__media">
+
+                        @if (!string.IsNullOrWhiteSpace(place.MainImagePath))
+                        {
+                            var imgSrc = place.MainImagePath.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                            ? place.MainImagePath
+                            : Url.Content("~/" + place.MainImagePath.TrimStart('/'));
+
+                            <img src="@imgSrc" alt="@place.Name" />
+                        }
+                        else
+                        {
+                            <div class="place-card__img-placeholder"></div>
+                        }
+
+                        <div class="place-card__overlay">
+                            <span>View Details!</span>
+                        </div>
+                    </div>
+
+                    <div class="place-card__body">
+                        <div class="place-card__top">
+                            <h3 class="place-card__name">@place.Name</h3>
+
+                            <div class="place-card__price">
+                                <div class="place-card__priceValue">@place.PricePerNight.ToString("0") SAR</div>
+                                <div class="place-card__priceUnit">/ day</div>
+                            </div>
+                        </div>
+
+                        <div class="place-card__meta">
+                            <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                            <span>@place.City</span>
+                            <span class="dot">•</span>
+                            <span>@place.Region</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </section>
+
+
+    </main>
+</div>
+
+<script>
+    (function () {
+      const input = document.getElementById("searchInput");
+      if (!input) return;
+
+      const cards = Array.from(document.querySelectorAll(".place-card"));
+
+      function normalize(text) {
+        return (text || "")
+          .toLowerCase()
+          .trim();
+      }
+
+      function filterCards() {
+        const query = normalize(input.value);
+
+        cards.forEach(card => {
+          const name = normalize(card.getAttribute("data-name"));
+          const match = name.includes(query);
+
+          card.style.display = match ? "" : "none";
+        });
+      }
+
+      input.addEventListener("input", filterCards);
+      filterCards(); 
+    })();
+</script>

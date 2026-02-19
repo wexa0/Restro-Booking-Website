@@ -1,0 +1,479 @@
+﻿@model Resort.Applications.Places.PlaceDetailsDto
+
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/place-details.css" asp-append-version="true" />
+}
+<div class="back-row">
+    <a class="back-link" href="@Url.Action("Index", "Home")">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
+        <span>Back to all chalets</span>
+    </a>
+</div>
+
+
+<div class="details-page">
+    <!-- Top title -->
+    <header class="details-hero">
+        <div class="details-hero__inner">
+            <p class="details-hero__kicker">Resort Details</p>
+
+            <div class="details-hero__row">
+                <div class="hero-left">
+                    <h1 class="details-hero__title">@Model.Name</h1>
+
+                    
+                </div>
+
+                <div class="hero-right">
+                    <div class="hero-price">
+                        <div class="hero-price__value">
+                            @Model.PricePerNight.ToString("0")
+                            <span class="hero-price__sar">SAR</span>
+                        </div>
+                        <div class="hero-price__unit">/per day</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main card -->
+    <main class="details-main">
+        <section class="details-card">
+
+            <div class="details-card2">
+            <!-- Left: content -->
+            <div class="details-card__left">
+                <h2 class="section-title">Overview</h2>
+
+                <p class="details-desc">
+                    @Model.Description
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="bi bi-pin-map-fill" aria-hidden="true"></i> Address
+                        </div>
+                        <div class="info-value">@Model.Address</div>
+                    </div>
+
+                  
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="bi bi-map" aria-hidden="true"></i> Google Map
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.GoogleMapUrl))
+                        {
+                            
+                                <a class="info-link" href="@Model.GoogleMapUrl" target="_blank" rel="noopener">
+                                    Open location
+                                    <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                                </a>
+                            
+                            var embedUrl = Model.GoogleMapUrl + (Model.GoogleMapUrl.Contains("?") ? "&" : "?") + "output=embed";
+
+                            <div class="map-block">
+                               
+
+                                <div class="map-embed">
+                                    <iframe src="@embedUrl"
+                                          
+                                            style="border:0;"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="map-block map-block--empty">
+                              
+                                <span>Location not provided</span>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                    <h2 class="section-title">Amenities</h2>
+                <div class="chips">
+                    @if (Model.Features != null && Model.Features.Count > 0)
+                    {
+                        foreach (var f in Model.Features)
+                        {
+                            <span class="chip" title="@f.Name">
+                                @if (!string.IsNullOrWhiteSpace(f.IconKey))
+                                {
+                                    <i class="@f.IconKey" aria-hidden="true"></i>
+                                }
+                                <span>@f.Name</span>
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <p class="details-muted">No amenities listed yet.</p>
+                    }
+                </div>
+            </div>
+                <div class="details-card__right">
+                    <div class="gallery">
+                        @{
+                            var images = Model.ImagePaths ?? Array.Empty<string>();
+                            var hasImages = images.Length > 0;
+                            var first = hasImages ? images[0] : "";
+                        }
+
+                        <div class="gallery__main" id="galleryMain">
+                            @if (hasImages)
+                            {
+                                var src = first.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                                ? first
+                                : Url.Content("~/" + first.TrimStart('/'));
+
+                                <img id="mainImg" src="@src" alt="@Model.Name photo" />
+                            }
+                            else
+                            {
+                                <div class="gallery__placeholder">
+                                    <i class="bi bi-image" aria-hidden="true"></i>
+                                    <span>No photos yet</span>
+                                </div>
+                            }
+
+                            <button class="gallery__nav gallery__nav--left" type="button" aria-label="Previous photo" onclick="prevImg()">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+
+                            <button class="gallery__nav gallery__nav--right" type="button" aria-label="Next photo" onclick="nextImg()">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div class="gallery__thumbs" id="thumbs">
+                            @if (hasImages)
+                            {
+                                for (int i = 0; i < images.Length; i++)
+                                {
+                                    var raw = images[i];
+                                    var tSrc = raw.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                                    ? raw
+                                    : Url.Content("~/" + raw.TrimStart('/'));
+
+                                    <button class="thumb @(i == 0 ? "is-active" : "")"
+                                            type="button"
+                                            onclick="setImg(@i)"
+                                            aria-label="Open photo @(i + 1)">
+                                        <img src="@tSrc" alt="thumb @(i + 1)" />
+                                    </button>
+                                }
+                            }
+                        </div>
+
+                        <p class="gallery__hint">Tip: click thumbnails to browse photos.</p>
+                    </div>
+
+                </div>
+            </div>
+
+               
+
+               
+
+                <div class="divider"></div>
+
+            <div class="details-card3">
+
+                <h2 class="section-title">Availability</h2>
+
+
+                <form class="booking-form"
+                      method="post"
+                      action="@Url.Action("Create", "Bookings")"
+                      data-booking
+                      data-place-id="@Model.Id"
+                      data-price="@Model.PricePerNight.ToString("0")"
+                      data-booked-days-url="@Url.Action("BookedDays", "Bookings")">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="booking-box">
+                        <div class="cal-head">
+                            <button class="cal-nav" type="button" data-cal-prev aria-label="Previous month">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
+
+                            <div class="cal-title" data-cal-title></div>
+
+                            <button class="cal-nav" type="button" data-cal-next aria-label="Next month">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <div class="cal-weekdays">
+                            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                        </div>
+
+                        <div class="cal-grid" data-cal-grid></div>
+
+                        <div class="booking-fields">
+                            <div class="bf">
+                                <label class="bf-label">Check-in</label>
+                                <input class="bf-input" type="text" readonly data-checkin placeholder="Select a date" />
+                            </div>
+
+                            <div class="bf">
+                                <label class="bf-label">Check-out</label>
+                                <input class="bf-input" type="text" readonly data-checkout placeholder="Select a date" />
+                            </div>
+                        </div>
+
+                        <div class="booking-meta" data-meta>
+                            <span class="muted">Select your dates to enable booking.</span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="placeId" value="@Model.Id" />
+                    <input type="hidden" name="fromDate" data-from />
+                    <input type="hidden" name="toDate" data-to />
+
+                    <div class="divider"></div>
+
+                    <h2 class="section-title">Payment Options</h2>
+
+                
+
+                    <div class="payment-grid" role="radiogroup" aria-label="Select payment method">
+                     
+
+                        
+
+                        <label class="pay-card">
+                            <input type="radio" name="paymentMethodUI" value="mastercard" />
+                            <span class="pay-card__inner">
+                                <span class="pay-logo">
+                                    <img src="~/images/payments/mastercard.png" alt="Mastercard" />
+                                </span>
+                                <span class="pay-name">Mastercard</span>
+                                <span class="pay-sub">Pay Now</span>
+                            </span>
+                        </label>
+
+                        <label class="pay-card">
+                            <input type="radio" name="paymentMethodUI" value="applepay" />
+                            <span class="pay-card__inner">
+                                <span class="pay-logo">
+                                    <img src="~/images/payments/applepay.png" alt="Apple Pay" />
+                                </span>
+                                <span class="pay-name">Apple Pay</span>
+                                <span class="pay-sub">Pay Now</span>
+                            </span>
+                        </label>
+
+                        <label class="pay-card">
+                            <input type="radio" name="paymentMethodUI" value="stcpay" />
+                            <span class="pay-card__inner">
+                                <span class="pay-logo">
+                                    <img src="~/images/payments/stcpay.png" alt="STC Pay" />
+                                </span>
+                                <span class="pay-name">STC Pay</span>
+                                <span class="pay-sub">Pay Now</span>
+                            </span>
+                        </label>
+
+                        <label class="pay-card">
+                            <input type="radio" name="paymentMethodUI" value="after_checkout" />
+                            <span class="pay-card__inner">
+                                <span class="pay-logo">
+                                    <img src="~/images/payments/CashOnDelivery.png" alt="Pay later" />
+                                </span>
+                                <span class="pay-name">Pay later (after check-out)</span>
+                                <span class="pay-sub">+50 SAR</span>
+                            </span>
+                        </label>
+
+                    </div>
+
+                    <input type="hidden" name="paymentMethod" id="paymentMethod" value="" />
+
+                    <div class="divider"></div>
+                    <div class="terms-row">
+                        <label class="terms-check">
+                            <input type="checkbox" id="agreeTerms" />
+
+                            <span>
+                                I have read and agree to the
+                                <button type="button" class="terms-link" data-open-terms>
+                                    Terms & Conditions
+                                </button>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="action-row">
+                        <button class="primary-cta" type="submit" data-submit disabled>
+                            Book now
+                        </button>
+                    </div>
+                   
+                </form>
+            </div>
+
+               
+        
+        </section>
+    </main>
+
+    <div class="terms-modal" id="termsModal" aria-hidden="true">
+        <div class="terms-modal__overlay" data-close-terms></div>
+
+        <div class="terms-modal__card" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+            <div class="terms-modal__head">
+                <h3 id="termsTitle">Terms & Conditions</h3>
+                <button type="button" class="terms-modal__close" data-close-terms aria-label="Close">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="terms-modal__body">
+                <ul class="terms-list">
+                    <li><strong>Check-in / Check-out:</strong> Guests must follow the property check-in and check-out times.</li>
+                    <li><strong>Damages:</strong> Any damages to the property or facilities may result in additional charges.</li>
+                    <li><strong>Personal belongings:</strong> The property is not responsible for lost or stolen items.</li>
+                    <li><strong>Capacity & visitors:</strong> Maximum capacity must be respected. Extra visitors may be restricted.</li>
+                    <li><strong>Noise:</strong> Please respect quiet hours and avoid loud noise that disturbs neighbors.</li>
+                    <li><strong>Cleanliness:</strong> Guests should keep the place reasonably clean. Excessive mess may incur fees.</li>
+                    <li><strong>Safety:</strong> Use facilities responsibly (pool, electrical appliances, etc.). Children must be supervised.</li>
+                    <li><strong>Cancellations:</strong> Cancellation policies depend on the property and booking status.</li>
+                </ul>
+                <p class="terms-note">
+                    By continuing, you confirm you understand and agree to these rules.
+                </p>
+            </div>
+
+            <div class="terms-modal__foot">
+                <button type="button" class="secondary-btn" data-close-terms>Close</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/js/pages/place-details-booking.js" asp-append-version="true"></script>
+
+@section Script {
+    <script>
+        const imgs = @Html.Raw(System.Text.Json.JsonSerializer.Serialize((Model.ImagePaths ?? Array.Empty<string>()).Select(p =>
+                    p.StartsWith("http") ? p : (Url.Content("~/" + p.TrimStart('/')))
+            )));
+    let idx = 0;
+
+        function setActiveThumb() {
+          const thumbs = document.querySelectorAll("#thumbs .thumb");
+          thumbs.forEach((t, i) => t.classList.toggle("is-active", i === idx));
+        }
+
+        function setImg(i) {
+          if (!imgs || imgs.length === 0) return;
+          idx = (i + imgs.length) % imgs.length;
+          const el = document.getElementById("mainImg");
+          if (el) el.src = imgs[idx];
+          setActiveThumb();
+        }
+
+        function nextImg() { setImg(idx + 1); }
+        function prevImg() { setImg(idx - 1); }
+    </script>
+
+    <script>
+        (function () {
+          const agree = document.getElementById("agreeTerms");
+          const submitBtn = document.querySelector("[data-submit]");
+          const meta = document.querySelector("[data-meta]");
+
+          // Terms modal
+          const modal = document.getElementById("termsModal");
+          const openBtn = document.querySelector("[data-open-terms]");
+          const closeBtns = document.querySelectorAll("[data-close-terms]");
+
+          function openModal() {
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+          }
+          function closeModal() {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+          }
+
+          openBtn?.addEventListener("click", openModal);
+          closeBtns.forEach(b => b.addEventListener("click", closeModal));
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeModal();
+          });
+
+          // ✅ Enable booking only when:
+          // 1) dates selected (your booking script usually sets data-from + data-to)
+          // 2) checkbox checked
+          function hasDates() {
+            const from = document.querySelector("[data-from]")?.value;
+            const to = document.querySelector("[data-to]")?.value;
+            return !!from && !!to;
+          }
+
+          function updateSubmitState() {
+            const ok = hasDates() && agree?.checked;
+            submitBtn.disabled = !ok;
+
+            // Optional UI hint
+            // if (meta) {
+            //   if (!hasDates()) {
+            //     meta.innerHTML = '<span class="muted">Select your dates to enable booking.</span>';
+            //   } else if (!agree?.checked) {
+            //     meta.innerHTML = '<span class="muted">Please accept the Terms & Conditions to proceed.</span>';
+            //   }
+           // }
+          }
+
+          agree?.addEventListener("change", updateSubmitState);
+
+          // This helps when your calendar JS updates hidden inputs
+          // Call it repeatedly light-weight
+          setInterval(updateSubmitState, 350);
+          updateSubmitState();
+        })();
+    </script>
+
+
+    <script>
+        (function () {
+          const radios = document.querySelectorAll('input[name="paymentMethodUI"]');
+          const hidden = document.getElementById("paymentMethod");
+
+          function setDefault() {
+            if (radios.length && !hidden.value) {
+              radios[0].checked = true;
+              hidden.value = radios[0].value;
+            }
+          }
+
+          radios.forEach(r => {
+            r.addEventListener("change", () => {
+              hidden.value = r.value;
+            });
+          });
+
+          setDefault();
+        })();
+    </script>
+
+
+
+}

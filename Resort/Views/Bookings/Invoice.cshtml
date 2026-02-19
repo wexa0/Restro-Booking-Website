@@ -1,0 +1,249 @@
+﻿@model Resort.Applications.Bookings.BookingInvoiceVm
+
+@{
+    ViewData["Title"] = "Invoice";
+    Layout = "_AppLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/invoice.css" asp-append-version="true" />
+}
+
+<div class="inv-wrap">
+
+    <div class="inv-topbar">
+        <a class="inv-back" href="@Url.Action("Index", "Home")">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            <span>Back to home</span>
+        </a>
+
+        <div class="inv-actions">
+            <button type="button" class="inv-btn inv-btn--ghost" onclick="window.print()">
+                <i class="bi bi-printer" aria-hidden="true"></i>
+                Print
+            </button>
+
+        @*     <a class="inv-btn inv-btn--primary" href="@Url.Action("Details", "Bookings", new { id = Model.BookingId })">
+                Booking details <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a> *@
+        </div>
+    </div>
+
+    <div class="inv-card">
+
+        <!-- Header -->
+        <div class="inv-head">
+            <div class="inv-head__left">
+                <div class="inv-badge">
+                    <i class="bi bi-receipt" aria-hidden="true"></i>
+                </div>
+
+                <div class="inv-title">
+                    <h1>Invoice</h1>
+                    <p class="inv-sub">
+                        A summary of your reservation and payment details.
+                    </p>
+                </div>
+            </div>
+
+            <div class="inv-head__right">
+                <span class="inv-status inv-status--@Model.StatusCss">
+                    <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                    @Model.StatusLabel
+                </span>
+            </div>
+        </div>
+
+        <!-- Meta -->
+        <div class="inv-meta">
+            <div class="meta-item">
+                <span class="meta-label">Invoice No.</span>
+                <span class="meta-value">@Model.InvoiceNumber</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Booking ID</span>
+                <span class="meta-value">#@Model.BookingId</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Issued</span>
+                <span class="meta-value">@Model.IssuedAtText</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Payment</span>
+                <span class="meta-value">
+                    @Model.PaymentMethodLabel
+                    @if (Model.PaymentMethod == "after_checkout")
+                    {
+                        <span class="meta-mini">(+@Model.PaymentFee.ToString("0") SAR fee)</span>
+                    }
+                </span>
+            </div>
+        </div>
+
+        <div class="inv-grid">
+            <div class="inv-left">
+
+                <section class="inv-section">
+                    <h2 class="inv-h2">Property</h2>
+
+                    <div class="inv-block">
+                        <div class="inv-row">
+                            <div class="inv-strong">@Model.PlaceName</div>
+                            <div class="inv-pill">
+                                @Model.PricePerNight.ToString("0")
+                                <span class="inv-pill__sar">SAR</span>
+                                <span class="inv-pill__muted">/night</span>
+                            </div>
+                        </div>
+
+                        <div class="inv-muted">
+                            <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                            <span>@Model.PlaceCity — @Model.PlaceRegion</span>
+                        </div>
+
+                        <div class="inv-muted">
+                            <i class="bi bi-pin-map-fill" aria-hidden="true"></i>
+                            <span>@Model.PlaceAddress</span>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.GoogleMapUrl))
+                        {
+                            <a class="inv-link" href="@Model.GoogleMapUrl" target="_blank" rel="noopener">
+                                Open location <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                        }
+                    </div>
+                </section>
+
+                <!-- Guest -->
+                <section class="inv-section">
+                    <h2 class="inv-h2">Guest Info</h2>
+
+                    <div class="inv-block">
+                        <div class="inv-kv">
+                            <div class="kv">
+                                <span class="kv-label">Full name</span>
+                                <span class="kv-value">@Model.GuestName</span>
+                            </div>
+                            <div class="kv">
+                                <span class="kv-label">Email</span>
+                                <span class="kv-value">@Model.GuestEmail</span>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stay -->
+                <section class="inv-section">
+                    <h2 class="inv-h2">Stay details</h2>
+
+                    <div class="inv-block">
+                        <div class="inv-kv inv-kv--3">
+                            <div class="kv">
+                                <span class="kv-label">Check-in</span>
+                                <span class="kv-value">@Model.CheckInText</span>
+                            </div>
+                            <div class="kv">
+                                <span class="kv-label">Check-out</span>
+                                <span class="kv-value">@Model.CheckOutText</span>
+                            </div>
+                            <div class="kv">
+                                <span class="kv-label">Nights</span>
+                                <span class="kv-value">@Model.Nights</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Policies -->
+                <section class="inv-section">
+                    <div class="inv-h2-row">
+                        <h2 class="inv-h2">Policies</h2>
+                        <span class="inv-ok">
+                            <i class="bi bi-check2" aria-hidden="true"></i>
+                            Accepted at checkout
+                        </span>
+                    </div>
+
+                    <div class="inv-block">
+                        <ul class="inv-list">
+                            @foreach (var p in Model.Policies)
+                            {
+                                <li>
+                                    <i class="bi bi-check2-circle" aria-hidden="true"></i>
+                                    <span>@p</span>
+                                </li>
+                            }
+                        </ul>
+
+                        <p class="inv-note">
+                            By booking, you confirmed agreement to these Terms & Conditions.
+                        </p>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="inv-right">
+
+                <h2 class="inv-h2">Payment summary</h2>
+                <section class="inv-summary">
+                    
+
+                    <div class="sum-row">
+                        <span class="sum-label">Rate</span>
+                        <span class="sum-value">
+                            @Model.PricePerNight.ToString("0") SAR × @Model.Nights
+                        </span>
+                    </div>
+
+                    <div class="sum-row">
+                        <span class="sum-label">Subtotal</span>
+                        <span class="sum-value">@Model.SubTotal.ToString("0") SAR</span>
+                    </div>
+
+                    <div class="sum-row">
+                        <span class="sum-label">
+                            Payment fee
+                            @if (Model.PaymentMethod == "after_checkout")
+                            {
+                                <span class="sum-mini">(Pay later)</span>
+                            }
+                        </span>
+                        <span class="sum-value">@Model.PaymentFee.ToString("0") SAR</span>
+                    </div>
+
+                    <div class="sum-divider"></div>
+
+                    <div class="sum-row sum-row--total">
+                        <span class="sum-label">Total</span>
+                        <span class="sum-value">@Model.Total.ToString("0") SAR</span>
+                    </div>
+
+                    <div class="pay-box">
+                        <div class="pay-box__row">
+                            <span class="pay-dot"></span>
+                            <div>
+                                <div class="pay-title">@Model.PaymentStatusTitle</div>
+                                <div class="pay-sub">@Model.PaymentStatusSub</div>
+                            </div>
+                        </div>
+
+                    
+                    </div>
+
+                    <div class="inv-mini-foot">
+                        
+                        <div class="mini">
+                            <span class="mini-label">Generated<span class="mini-value">Automatically</span></span>
+                            
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </div>
+</div>
