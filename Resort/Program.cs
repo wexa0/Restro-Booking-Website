@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;                 // PasswordHasher
 using Microsoft.EntityFrameworkCore;
 
@@ -22,11 +22,11 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<Resort.Domain.Places.IPlaceRepository, Resort.Infrastructure.Repositories.PlaceRepository>();
 builder.Services.AddScoped<Resort.Applications.Places.IPlaceQueryService, Resort.Infrastructure.Repositories.PlaceQueryService>();
 
-// ? Users repo + password hasher
+// ✅ Users repo + password hasher
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
-// ? Cookie Auth
+// ✅ Cookie Auth
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -63,5 +63,6 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
+
 
 app.Run();
