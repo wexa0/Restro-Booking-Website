@@ -1,5 +1,4 @@
-﻿/* ===== Auth page background ===== */
-.auth-page {
+﻿.auth-page {
     min-height: 100vh;
     display: grid;
     place-items: center;
@@ -8,7 +7,6 @@
     overflow: hidden;
 }
 
-    /* background image */
     .auth-page::before {
         content: "";
         position: absolute;
@@ -19,7 +17,6 @@
         z-index: 0;
     }
 
-    /* overlay for readability */
     .auth-page::after {
         content: "";
         position: absolute;
@@ -28,19 +25,17 @@
         z-index: 0;
     }
 
-/* card */
 .auth-card {
     position: relative;
     z-index: 1;
     width: min(520px, 92vw);
     border-radius: 24px;
     padding: 28px 26px 24px;
-    background: #5D6C5D; /* ✅ card color */
+    background: #5D6C5D; 
     box-shadow: 0 22px 60px rgba(0,0,0,0.35);
     color: #fff;
 }
 
-/* top area */
 .auth-top {
     position: relative;
     padding-top: 10px;
@@ -69,9 +64,8 @@
         display: block;
     }
 
-/* centered title */
 .auth-head {
-    text-align: center; /* ✅ welcome back center */
+    text-align: center; 
     padding: 0 10px;
 }
 
@@ -90,7 +84,6 @@
     color: rgba(255,255,255,0.9);
 }
 
-/* form fields */
 .auth-form {
     margin-top: 18px;
 }
@@ -133,7 +126,6 @@
     color: rgba(255,255,255,0.8);
 }
 
-/* button */
 .auth-btn {
     height: 45px;
     padding: 0px 0px;
@@ -162,7 +154,6 @@
 .auth-actions {
     margin: 10px 1px 0px 1px;
 }
-/* footer */
 .auth-footer {
     margin-top: 14px;
     font-size: 14px;
@@ -177,7 +168,6 @@
         text-underline-offset: 4px;
     }
 
-/* validation text */
 .field-validation-error {
     display: block;
     margin-top: 8px;

@@ -53,11 +53,10 @@ public class AuthController : Controller
             return View(model);
         }
 
-        // Claims (اسم العرض = FullName)
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, dbUser.Id),
-            new Claim(ClaimTypes.Name, dbUser.FullName),      // ✅ FullName هنا
+            new Claim(ClaimTypes.Name, dbUser.FullName),     
             new Claim(ClaimTypes.Email, dbUser.Email),
             new Claim("full_name", dbUser.FullName)
         };
@@ -107,11 +106,10 @@ public class AuthController : Controller
         newUser.PasswordHash = _hasher.HashPassword(newUser, model.Password);
         await _users.AddAsync(newUser);
 
-        // (اختياري) تسجيل دخول مباشرة بعد التسجيل
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, newUser.Id),
-            new Claim(ClaimTypes.Name, newUser.FullName),     // ✅ FullName هنا
+            new Claim(ClaimTypes.Name, newUser.FullName),     
             new Claim(ClaimTypes.Email, newUser.Email),
             new Claim("full_name", newUser.FullName)
         };
