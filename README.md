@@ -54,15 +54,15 @@ The project is intentionally organized to show strong understanding of **clean b
 - **.NET SDK** 
 - **SQL Server** (LocalDB or full instance)
 - (Optional) **EF Core Tools**:
-  - `dotnet tool install --global dotnet-ef`
+`dotnet tool install --global dotnet-ef`
 
 ### Steps
 1. Clone the repo
 2. Update the DB connection string in `appsettings.json`
 3. Apply migrations:
-   - `dotnet ef database update`
+`dotnet ef database update`
 4. Run the project:
-   - `dotnet run`
+`dotnet run`
 5. Open the app in your browser (the launch URL is in `Properties/launchSettings.json`)
 
 ---
