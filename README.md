@@ -1,25 +1,4 @@
 # Restro — Resort & Chalet Booking Website (ASP.NET Core MVC)
-
-A modern **ASP.NET Core MVC** web application for browsing resorts/chalets and creating bookings with a clean, layered codebase (Domain + Infrastructure + MVC).
-
-> This README is written to be **GitHub-ready** and is aligned to your current solution layout (Controllers/Views/Domain/Infrastructure/Repositories + EF Core migrations).
-
----
-
-## Table of Contents
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Tech Stack](#tech-stack)
-- [Architecture Overview](#architecture-overview)
-- [Project Structure](#project-structure)
-- [Database Design](#database-design)
-- [How to Run Locally](#how-to-run-locally)
-- [Configuration](#configuration)
-- [Screenshots & Media](#screenshots--media)
-- [Demo Video](#demo-video)
-- [Future Enhancements](#future-enhancements)
-- [Security Notes](#security-notes)
-
 ---
 
 ## Overview
@@ -72,44 +51,9 @@ The solution follows a practical layered style:
 - **Domain:** entities + repository interfaces + business rules (where applicable)  
 - **Infrastructure:** EF Core DbContext + repository implementations + migrations  
 
-### Ready Diagram (included in this repo)
-![Layered Architecture](docs/images/architecture/layered-architecture-reference.png)
-
-Additional reference diagrams:
-- ![Controller → Repo → Entity](docs/images/architecture/layers-controller-repo-reference.png)
-- ![Architecture Patterns (Reference)](docs/images/architecture/architecture-patterns-reference.png)
-
-> Note: These are **visual references** you already collected. Your real mapping is described in `docs/architecture/architecture-diagram.md`.
 
 ---
 
-## Project Structure
-
-High-level structure (as in your Solution Explorer screenshots):
-
-- `Controllers/` (e.g., `LandingController`, `PlacesController`, …)
-- `Views/`
-  - `Views/Auth/` (`Login.cshtml`, `Register.cshtml`)
-  - `Views/Bookings/` (`Invoice.cshtml`, `Success.cshtml`)
-  - `Views/Home/` (`Index.cshtml`)
-  - `Views/Landing/` (`Welcome.cshtml`)
-  - `Views/Places/` (`Details.cshtml`)
-- `Models/` (e.g., `LoginModel`, `RegisterModel`, `ErrorViewModel`)
-- `Domain/`
-  - `Bookings/` (e.g., `Booking`, `BookingStatus`, `IBookingRepository`)
-  - `Places/` (e.g., `Place`, `Feature`, `IPlaceRepository`, `IFeatureRepository`)
-  - `Users/` (e.g., `User`, `IUserRepository`)
-- `Infrastructure/`
-  - `Database/` (`AppDbContext`, constants/config helpers)
-  - `Repositories/` (EF implementations, query services)
-- `Migrations/` (EF Core migration history)
-
-Structure reference images:
-- ![Views & Models](docs/images/architecture/solution-structure-views-models.png)
-- ![Infra & Migrations](docs/images/architecture/solution-structure-infra-migrations.png)
-- ![Domain & Infrastructure](docs/images/architecture/solution-structure-domain-infrastructure.png)
-
----
 
 ## Database Design
 
@@ -212,10 +156,3 @@ GitHub doesn’t reliably embed videos inside `README.md`, so use one of these:
 - Automated tests (domain rules + booking overlap validation).
 - CI pipeline (build + test + migrations checks).
 
----
-
-## Security Notes
-
-- Never commit secrets (DB passwords, API keys).
-- Prefer **User Secrets** locally and **Environment Variables** in production.
-- Validate all booking inputs on both client and server.
