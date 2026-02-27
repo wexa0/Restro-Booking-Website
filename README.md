@@ -43,18 +43,11 @@ The project is intentionally organized to show strong understanding of **clean b
 - **Architecture:** Layered (MVC + Domain + Infrastructure), Repository Pattern, SOLID-friendly DI
 
 ---
+## 🎥 Demo Video
 
-## 🧩Architecture Overview
-
-The solution follows a practical layered style:
-
-- **Presentation (MVC):** Controllers + Razor Views + UI models  
-- **Application/Queries:** query/use-case services (e.g., place query service)  
-- **Domain:** entities + repository interfaces + business rules (where applicable)  
-- **Infrastructure:** EF Core DbContext + repository implementations + migrations  
+[![Restro Demo](https://img.youtube.com/vi/R7ASx4bJz5Q/maxresdefault.jpg)](https://youtu.be/R7ASx4bJz5Q)
 
 ---
-
 ## 🛠️How to Run Locally
 
 ### Prerequisites
@@ -71,19 +64,6 @@ The solution follows a practical layered style:
 4. Run the project:
    - `dotnet run`
 5. Open the app in your browser (the launch URL is in `Properties/launchSettings.json`)
-
----
-
-## 🖼️Screenshots & Media
-
-
-### UI Screenshots
-- Welcome + Home Page
-  <img width="5669" height="3779" alt="1" src="https://github.com/user-attachments/assets/7205a237-bee7-4924-9781-0b6d659d2749" />
-
-- Place Details + Invoice Page
-![Uploading 1.png…]()
-<img width="5669" height="3779" alt="2" src="https://github.com/user-attachments/assets/5dedd9e9-84f6-4d25-ade2-191e3b12d86c" />
 
 ---
 
