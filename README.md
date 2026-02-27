@@ -1,41 +1,40 @@
-# Restro — Resort & Chalet Booking Website 
+ # Restro — Resort & Chalet Booking Website 
 
-![Uploading Black and Beige Minimalist Elegant Cosmetics Logo (1).png…]()
+<img width="2000" height="592" alt="Black and Beige Minimalist Elegant Cosmetics Logo (1)" src="https://github.com/user-attachments/assets/9c2bcc92-3e91-49ba-a63f-73f4c50e676a" />
 
 ---
 
-## Overview
+## ✨Overview
 
 **Restro** is a booking website that allows users to:
-- browse available places (chalets/resorts),
-- view place details,
-- pick booking dates,
-- and complete a booking flow that can include an invoice/success step.
+- 🔎browse available places (chalets/resorts),
+- 🏡view place details,
+- 📅pick booking dates,
+- 🧾 Complete a booking flow (Invoice ✅ / Success 🎉)
 
 The project is intentionally organized to show strong understanding of **clean boundaries**:
 - **MVC Presentation** for UI and request handling,
 - **Domain** for business entities and contracts,
 - **Infrastructure** for persistence and repository implementations.
-
 ---
 
-## Key Features
+## ✅Key Features
 
-### Customer Experience
+### 👤Customer Experience
 - Browse and view place details.
 - Booking flow with dedicated pages (e.g., **Invoice** and **Success**).
 - Prevent selecting invalid/unavailable dates (booked days are handled server-side).
 
-### Authentication
+### 🔐Authentication
 - Login & Registration pages with dedicated models and views.
 
-### Data & Persistence
+### 🗄️Data & Persistence
 - EF Core migrations for schema evolution (including user and booking invoice-related changes).
 - Repository pattern (interfaces in Domain, implementations in Infrastructure).
 
 ---
 
-## Tech Stack
+## 🧰Tech Stack
 
 - **Backend:** C#, ASP.NET Core MVC
 - **UI:** Razor Views (cshtml)
@@ -45,7 +44,7 @@ The project is intentionally organized to show strong understanding of **clean b
 
 ---
 
-## Architecture Overview
+## 🧩Architecture Overview
 
 The solution follows a practical layered style:
 
@@ -54,28 +53,12 @@ The solution follows a practical layered style:
 - **Domain:** entities + repository interfaces + business rules (where applicable)  
 - **Infrastructure:** EF Core DbContext + repository implementations + migrations  
 
-
 ---
 
-
-## Database Design
-
-This project uses **EF Core Migrations** to manage schema changes over time.
-
-Typical core entities (based on your Domain layout):
-- **Place** (a chalet/resort listing)
-- **Feature** (amenities related to a place)
-- **Booking** (date range + status + optional invoice fields)
-- **User** (auth & profile data)
-
-> Add your ERD screenshot here once ready.
-
----
-
-## How to Run Locally
+## 🛠️How to Run Locally
 
 ### Prerequisites
-- **.NET SDK** (use the same version as your project `TargetFramework`)
+- **.NET SDK** 
 - **SQL Server** (LocalDB or full instance)
 - (Optional) **EF Core Tools**:
   - `dotnet tool install --global dotnet-ef`
@@ -91,66 +74,20 @@ Typical core entities (based on your Domain layout):
 
 ---
 
-## Configuration
+## 🖼️Screenshots & Media
 
-### Connection Strings
-Set your SQL Server connection string in `appsettings.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=...;Database=...;User Id=...;Password=...;TrustServerCertificate=True"
-  }
-}
-```
-
-> Don’t commit real passwords. Use user-secrets or environment variables for private settings.
-
----
-
-## Screenshots & Media
-
-> Add images under `docs/images/` and keep filenames consistent.
 
 ### UI Screenshots
-- Home Page  
-  `docs/images/ui/home.png`
-- Place Details  
-  `docs/images/ui/place-details.png`
-- Booking Flow (Date Picker / Summary)  
-  `docs/images/ui/booking-flow.png`
-- Invoice + Success  
-  `docs/images/ui/invoice.png`  
-  `docs/images/ui/success.png`
+- Welcome + Home Page
+  <img width="5669" height="3779" alt="1" src="https://github.com/user-attachments/assets/7205a237-bee7-4924-9781-0b6d659d2749" />
 
-### Architecture Diagram
-- `docs/images/architecture/your-architecture.png`
-
-### Database / ERD
-- `docs/images/db/erd.png`
-
-See: **`docs/README_MEDIA_GUIDE.md`** for exact naming + where to place things.
+- Place Details + Invoice Page
+![Uploading 1.png…]()
+<img width="5669" height="3779" alt="2" src="https://github.com/user-attachments/assets/5dedd9e9-84f6-4d25-ade2-191e3b12d86c" />
 
 ---
 
-## Demo Video
-
-GitHub doesn’t reliably embed videos inside `README.md`, so use one of these:
-
-**Option A (Recommended): link the MP4**
-- Put your video at: `docs/videos/demo.mp4`
-- Link it:
-  - 🎥 Demo video: [`docs/videos/demo.mp4`](docs/videos/demo.mp4)
-
-**Option B (Best README experience): GIF preview + full video link**
-- Add a short GIF:
-  - `docs/images/demo/demo-preview.gif`
-- Then link the full MP4:
-  - Full video: [`docs/videos/demo.mp4`](docs/videos/demo.mp4)
-
----
-
-## Future Enhancements
+## 🔮Future Enhancements
 
 - Role-based authorization (Customer / Owner / Admin).
 - Owner dashboard (manage places, pricing, availability).
